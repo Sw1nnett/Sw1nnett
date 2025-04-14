@@ -1,35 +1,104 @@
+// File: pages/index.tsx
 import React from "react";
-import { Button } from "@/components/ui/button";
+import Head from "next/head";
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-gray-900 text-white font-sans">
-      <section className="flex flex-col items-center justify-center px-6 py-24 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 via-purple-400 to-pink-500 bg-clip-text text-transparent">
-          Veydra
-        </h1>
-        <p className="max-w-xl text-lg text-zinc-300 mb-8">
-          Train like a threat. Think like a defender. Cybersecurity learning made powerful, minimalist, and scalable.
-        </p>
-        <Button className="px-6 py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white text-lg font-medium shadow-lg transition-all">
-          Start Learning
-        </Button>
-      </section>
+    <>
+      <Head>
+        <title>Veydra | Train like a threat</title>
+        <meta name="description" content="Cybersecurity education for students and professionals." />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      <section className="bg-zinc-950 bg-[url('/carbon-fiber.png')] bg-cover bg-center py-16 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4 text-purple-400">
-            Built for Students & Professionals
-          </h2>
-          <p className="text-zinc-300 text-lg">
-            Whether you're new to cyber or upskilling as a pro, Veydra gives you the foundation, tools, and tactical mindset needed to succeed in today’s evolving threat landscape.
+      <main className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-gray-900 text-white font-sans">
+        <section className="flex flex-col items-center justify-center px-6 py-24 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 via-purple-400 to-pink-500 bg-clip-text text-transparent">
+            Veydra
+          </h1>
+          <p className="max-w-xl text-lg text-zinc-300 mb-8">
+            Train like a threat. Think like a defender. Cybersecurity learning made powerful, minimalist, and scalable.
           </p>
-        </div>
-      </section>
+          <a
+            href="#"
+            className="inline-block px-6 py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white text-lg font-medium shadow-lg transition-all"
+          >
+            Start Learning
+          </a>
+        </section>
 
-      <footer className="bg-black text-zinc-500 py-6 text-center text-sm">
-        © {new Date().getFullYear()} Veydra. All rights reserved.
-      </footer>
-    </main>
+        <section className="bg-zinc-950 bg-[url('/carbon-fiber.png')] bg-cover bg-center py-16 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4 text-purple-400">
+              Built for Students & Professionals
+            </h2>
+            <p className="text-zinc-300 text-lg">
+              Whether you're new to cyber or upskilling as a pro, Veydra gives you the foundation, tools, and tactical mindset needed to succeed in today’s evolving threat landscape.
+            </p>
+          </div>
+        </section>
+
+        <footer className="bg-black text-zinc-500 py-6 text-center text-sm">
+          © {new Date().getFullYear()} Veydra. All rights reserved.
+        </footer>
+      </main>
+    </>
   );
+}
+
+// File: tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// File: styles/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+// File: public/carbon-fiber.png
+// (Add your carbon fiber texture image here)
+
+// File: next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+}
+
+module.exports = nextConfig;
+
+// File: package.json (Relevant dependencies)
+{
+  "name": "veydra-landing",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.0.0",
+    "typescript": "^4.5.2"
+  }
 }
