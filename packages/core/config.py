@@ -78,7 +78,10 @@ class Settings(BaseSettings):
 
     @field_validator("trading_mode", mode="before")
     @classmethod
-    def _lower_mode(cls, v: str) -> str:
+    def _lower_mode(cls, v) -> str:
+        # In Python 3.11+, str(TradingMode.paper) → "TradingMode.paper"; use .value instead
+        if isinstance(v, TradingMode):
+            return v.value
         return str(v).lower()
 
     @model_validator(mode="after")
