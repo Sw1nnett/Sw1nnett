@@ -48,6 +48,8 @@ def _map_order_status(status: str) -> OrderStatus:
 class AlpacaAdapter(BaseBroker):
     """Live/paper equity trading via Alpaca Markets."""
 
+    broker_name: BrokerName = BrokerName.alpaca
+
     def __init__(self, api_key: str, api_secret: str, base_url: str, paper: bool = True) -> None:
         self._api_key = api_key
         self._api_secret = api_secret
@@ -344,6 +346,8 @@ class AlpacaAdapter(BaseBroker):
 
 class SimulatorAdapter(BaseBroker):
     """In-process paper broker for testing and paper trading."""
+
+    broker_name: BrokerName = BrokerName.simulator
 
     def __init__(
         self,

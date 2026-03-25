@@ -6,7 +6,7 @@ from decimal import Decimal
 from typing import Optional
 
 from packages.brokers.base import BaseBroker
-from packages.core.enums import OrderSide, OrderStatus, OrderType, TradingMode
+from packages.core.enums import BrokerName, OrderSide, OrderStatus, OrderType, TradingMode
 from packages.core.models import Fill, Order, Signal
 from packages.core.utils import generate_client_order_id
 from packages.data.database import get_db_session
@@ -46,13 +46,14 @@ class ExecutionEngine:
             return None
 
         coid = generate_client_order_id(signal.strategy_id, signal.symbol)
+        broker_name: BrokerName = getattr(self._broker, "broker_name", BrokerName.simulator)
         order = Order(
             client_order_id=coid,
             symbol=signal.symbol,
             side=OrderSide.buy,  # Phase 1: long only
             order_type=OrderType.market,
             qty=signal.suggested_qty,
-            broker=self._broker.__class__.__name__.lower(),
+            broker=broker_name,
             strategy_id=signal.strategy_id,
         )
 
@@ -121,6 +122,11 @@ class ExecutionEngine:
             qty=float(fill.qty),
             price=float(fill.price),
         )
+        if self._db_url:
+            import asyncio
+            asyncio.get_event_loop().call_soon_threadsafe(
+                lambda: asyncio.create_task(self._persist_fill(fill))
+            )
 
     # ------------------------------------------------------------------ #
     # Order management

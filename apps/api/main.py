@@ -12,7 +12,13 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
+from packages.backtest.analytics import compute_metrics
+from packages.backtest.data_loader import generate_synthetic_bars
+from packages.backtest.engine import BacktestEngine
+from packages.backtest.optimizer import grid_search
+from packages.backtest.walk_forward import run_walk_forward
 from packages.core.config import get_settings
+from packages.core.models import StrategyConfig
 from packages.observability.logging import configure_logging, get_logger
 
 
@@ -270,4 +276,168 @@ async def metrics_summary(claims: dict = Depends(_verify_token)):
         "cash": float(_portfolio_tracker.cash),
         "realized_pnl": float(_portfolio_tracker.realized_pnl),
         "open_positions": len(_portfolio_tracker.positions),
+    }
+
+
+# ------------------------------------------------------------------ #
+# Backtest API
+# ------------------------------------------------------------------ #
+
+class BacktestRequest(BaseModel):
+    strategy: str = "MomentumBreakoutStrategy"
+    symbols: list[str] = ["SPY"]
+    params: dict = {}
+    n_bars: int = 1000
+    seed: int = 42
+    initial_capital: float = 100_000.0
+    warmup_bars: int = 60
+    commission_per_share: float = 0.005
+    slippage_bps: float = 2.0
+
+
+class OptimizeRequest(BaseModel):
+    strategy: str = "MomentumBreakoutStrategy"
+    symbols: list[str] = ["SPY"]
+    param_grid: dict[str, list[Any]] = {}
+    n_bars: int = 1000
+    seed: int = 42
+    initial_capital: float = 100_000.0
+    warmup_bars: int = 60
+
+
+class WalkForwardRequest(BaseModel):
+    strategy: str = "MomentumBreakoutStrategy"
+    symbols: list[str] = ["SPY"]
+    params: dict = {}
+    n_bars: int = 2000
+    seed: int = 42
+    n_splits: int = 5
+    train_pct: float = 0.7
+    initial_capital: float = 100_000.0
+    warmup_bars: int = 60
+
+
+@app.post("/backtest/run")
+async def run_backtest(body: BacktestRequest, claims: dict = Depends(_verify_token)):
+    """Run a full backtest and return metrics + summary."""
+    bars_by_symbol = {
+        sym: generate_synthetic_bars(sym, n_bars=body.n_bars, seed=body.seed)
+        for sym in body.symbols
+    }
+    cfg = StrategyConfig(
+        cls_name=body.strategy,
+        symbols=body.symbols,
+        params=body.params,
+    )
+    engine = BacktestEngine(
+        strategy_configs=[cfg],
+        initial_capital=body.initial_capital,
+        commission_per_share=body.commission_per_share,
+        slippage_bps=body.slippage_bps,
+        warmup_bars=body.warmup_bars,
+    )
+    try:
+        result = engine.run(bars_by_symbol)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+    metrics = compute_metrics(result)
+    return {
+        "strategy": body.strategy,
+        "symbols": body.symbols,
+        "start_date": result.start_date.isoformat(),
+        "end_date": result.end_date.isoformat(),
+        "initial_capital": float(result.initial_capital),
+        "final_capital": float(result.final_capital),
+        "total_trades": len(result.trades),
+        "risk_events": len(result.risk_events),
+        "blocked_orders": len(result.blocked_orders),
+        "metrics": metrics,
+    }
+
+
+@app.post("/backtest/optimize")
+async def optimize_strategy(body: OptimizeRequest, claims: dict = Depends(_verify_token)):
+    """Grid-search strategy parameters and return ranked results."""
+    if not body.param_grid:
+        raise HTTPException(status_code=400, detail="param_grid must not be empty")
+
+    bars_by_symbol = {
+        sym: generate_synthetic_bars(sym, n_bars=body.n_bars, seed=body.seed)
+        for sym in body.symbols
+    }
+    try:
+        result = grid_search(
+            strategy_cls=body.strategy,
+            symbols=body.symbols,
+            bars_by_symbol=bars_by_symbol,
+            param_grid=body.param_grid,
+            initial_capital=body.initial_capital,
+            warmup_bars=body.warmup_bars,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+    ranked = result.ranked[:20]  # return top 20
+    return {
+        "strategy": body.strategy,
+        "total_combinations": len(result.runs),
+        "best_params": result.best.params if result.best else None,
+        "best_sharpe": result.best.sharpe if result.best else None,
+        "ranked": [
+            {
+                "params": r.params,
+                "sharpe": r.sharpe,
+                "total_return_pct": r.total_return_pct,
+                "win_rate_pct": r.win_rate_pct,
+                "total_trades": r.total_trades,
+            }
+            for r in ranked
+        ],
+    }
+
+
+@app.post("/backtest/walk-forward")
+async def walk_forward(body: WalkForwardRequest, claims: dict = Depends(_verify_token)):
+    """Run walk-forward validation and return split results."""
+    bars_by_symbol = {
+        sym: generate_synthetic_bars(sym, n_bars=body.n_bars, seed=body.seed)
+        for sym in body.symbols
+    }
+    cfg = StrategyConfig(
+        cls_name=body.strategy,
+        symbols=body.symbols,
+        params=body.params,
+    )
+    try:
+        result = run_walk_forward(
+            strategy_config=cfg,
+            bars_by_symbol=bars_by_symbol,
+            n_splits=body.n_splits,
+            train_pct=body.train_pct,
+            initial_capital=body.initial_capital,
+            warmup_bars=body.warmup_bars,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+    return {
+        "strategy": body.strategy,
+        "n_splits": len(result.splits),
+        "avg_sharpe": result.avg_sharpe,
+        "avg_return_pct": result.avg_return_pct,
+        "avg_win_rate": result.avg_win_rate,
+        "consistency_score": result.consistency_score,
+        "total_test_trades": result.total_test_trades,
+        "splits": [
+            {
+                "split_index": s.split_index,
+                "train_bars": s.train_bars,
+                "test_bars": s.test_bars,
+                "test_sharpe": s.test_metrics.get("sharpe_ratio", 0.0),
+                "test_return_pct": s.test_metrics.get("total_return_pct", 0.0),
+                "test_trades": s.test_metrics.get("total_trades", 0),
+            }
+            for s in result.splits
+        ],
     }
