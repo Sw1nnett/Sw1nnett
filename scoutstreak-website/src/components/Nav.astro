@@ -1,0 +1,36 @@
+---
+const links = [
+  { label: 'Platform', href: '#platform' },
+  { label: 'Roles', href: '#roles' },
+  { label: 'AI', href: '#ai' },
+  { label: 'Compliance', href: '#compliance' },
+  { label: 'Sports', href: '#sports' },
+  { label: 'Pricing', href: '#pricing' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-bg-primary/80 backdrop-blur-md border-b border-border">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between" aria-label="Main navigation">
+    <a href="/" class="font-display text-xl text-gold hover:text-gold/90 transition-colors shrink-0">
+      ScoutStreak
+    </a>
+
+    <div class="hidden md:flex items-center gap-6">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="font-mono text-[10px] uppercase tracking-[0.07em] text-text-muted hover:text-text transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href="#signup"
+      class="border border-gold text-gold text-xs font-body font-600 px-4 py-1.5 rounded-full hover:bg-gold hover:text-bg-primary transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+    >
+      Join the launch
+    </a>
+  </nav>
+</header>

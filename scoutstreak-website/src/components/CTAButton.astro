@@ -1,0 +1,29 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'filled' | 'outline' | 'text';
+  class?: string;
+  type?: 'button' | 'submit';
+  id?: string;
+}
+const { href, variant = 'filled', class: className = '', type, id } = Astro.props;
+
+const base = 'inline-flex items-center gap-2 font-body font-600 text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold';
+
+const variants: Record<string, string> = {
+  filled: `${base} bg-gold text-bg-primary px-6 py-3 rounded-full hover:bg-gold/90`,
+  outline: `${base} border border-gold text-gold px-6 py-3 rounded-full hover:bg-gold hover:text-bg-primary`,
+  text: `${base} text-text-muted hover:text-gold`,
+};
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  type={!href ? (type || 'button') : undefined}
+  id={id}
+  class:list={[variants[variant], className]}
+>
+  <slot />
+</Tag>

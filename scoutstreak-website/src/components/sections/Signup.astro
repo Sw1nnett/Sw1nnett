@@ -1,0 +1,108 @@
+---
+---
+
+<section id="signup" class="py-20 md:py-24 relative overflow-hidden" aria-label="Join the launch">
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vw] rounded-full bg-gold/[0.04] blur-[100px]"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="bg-bg-secondary border border-border rounded-2xl p-8 md:p-12 max-w-2xl mx-auto text-center">
+      <p class="font-mono text-[10px] uppercase tracking-[0.15em] text-text-muted mb-5">
+        JOIN THE LAUNCH
+      </p>
+      <h2 class="font-display text-[clamp(32px,5vw,48px)] leading-[0.98] text-text mb-4">
+        Be first when<br>we <em class="italic text-gold">launch.</em>
+      </h2>
+      <p class="text-text-muted text-base leading-relaxed mb-8">
+        We're launching on the App Store in spring 2026. Join the list for early access
+        and development updates.
+      </p>
+
+      <form id="signup-form" class="space-y-4">
+        <div>
+          <label for="signup-email" class="sr-only">Email address</label>
+          <input
+            type="email"
+            id="signup-email"
+            name="email"
+            required
+            placeholder="you@email.com"
+            class="w-full bg-bg-primary border border-border rounded-lg px-4 py-3 text-text text-sm placeholder:text-text-muted/60 focus:outline-none focus:border-gold transition-colors"
+          />
+        </div>
+        <div>
+          <label for="signup-role" class="sr-only">Your role</label>
+          <select
+            id="signup-role"
+            name="role"
+            required
+            class="w-full bg-bg-primary border border-border rounded-lg px-4 py-3 text-text text-sm focus:outline-none focus:border-gold transition-colors appearance-none"
+          >
+            <option value="" disabled selected>Select your role</option>
+            <option value="athlete">Athlete</option>
+            <option value="parent">Parent</option>
+            <option value="hs_coach">HS Coach</option>
+            <option value="college_recruiter">College Recruiter</option>
+            <option value="athletic_director">Athletic Director</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          id="signup-submit"
+          class="w-full bg-gold text-bg-primary font-body font-600 text-sm px-6 py-3 rounded-full hover:bg-gold/90 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Join the launch list
+        </button>
+      </form>
+
+      <div id="signup-success" class="hidden">
+        <p class="text-success text-base font-600">You're on the list.</p>
+        <p class="text-text-muted text-sm mt-2">We'll be in touch before launch.</p>
+      </div>
+
+      <div id="signup-error" class="hidden">
+        <p class="text-poor text-base font-600">Something went wrong.</p>
+        <p class="text-text-muted text-sm mt-2">
+          Email <a href="mailto:swinnett@scoutstreak.com" class="text-gold hover:underline">swinnett@scoutstreak.com</a> to be added manually.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('signup-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('signup-submit') as HTMLButtonElement;
+  const successEl = document.getElementById('signup-success') as HTMLDivElement;
+  const errorEl = document.getElementById('signup-error') as HTMLDivElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (form.querySelector('#signup-email') as HTMLInputElement).value;
+    const role = (form.querySelector('#signup-role') as HTMLSelectElement).value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+      if (import.meta.env.DEV) {
+        console.log('Launch signup payload:', { email, role, source: 'website' });
+        await new Promise((r) => setTimeout(r, 500));
+      } else {
+        const res = await fetch('https://scoutstreak-api.fly.dev/api/public/launch-signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, role, source: 'website' }),
+        });
+        if (!res.ok) throw new Error(`${res.status}`);
+      }
+      form.classList.add('hidden');
+      successEl.classList.remove('hidden');
+    } catch {
+      form.classList.add('hidden');
+      errorEl.classList.remove('hidden');
+    }
+  });
+</script>

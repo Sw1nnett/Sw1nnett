@@ -1,0 +1,31 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  pageTitle: string;
+  updatedDate: string;
+  canonical: string;
+}
+const { title, pageTitle, updatedDate, canonical } = Astro.props;
+---
+
+<Base title={title} canonical={canonical}>
+  <Nav />
+  <main class="pt-24 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="font-mono text-[10px] uppercase tracking-[0.15em] text-text-muted mb-4">
+        Last updated: {updatedDate}
+      </p>
+      <h1 class="font-display text-[clamp(32px,5vw,48px)] leading-[0.98] text-text mb-10">
+        {pageTitle}
+      </h1>
+      <div class="prose-legal space-y-6 [&>h2]:font-display [&>h2]:text-xl [&>h2]:text-text [&>h2]:mt-10 [&>h2]:mb-3 [&>p]:text-text-muted [&>p]:text-sm [&>p]:leading-relaxed [&>ul]:text-text-muted [&>ul]:text-sm [&>ul]:leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:space-y-1">
+        <slot />
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>

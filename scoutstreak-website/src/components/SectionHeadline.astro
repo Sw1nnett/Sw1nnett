@@ -1,0 +1,20 @@
+---
+/**
+ * Usage: pass HTML with <em> tags for italic-gold emphasis.
+ * Example: <SectionHeadline>Recruiting,<br><em>Verified.</em></SectionHeadline>
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<h2
+  class:list={[
+    'font-display text-[clamp(32px,5vw,56px)] leading-[0.98] text-text mb-6',
+    '[&>em]:not-italic [&>em]:text-gold [&>em]:font-display [&>em]:italic',
+    className,
+  ]}
+>
+  <slot />
+</h2>

@@ -1,0 +1,60 @@
+---
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeadline from '../SectionHeadline.astro';
+
+const cards = [
+  {
+    tag: 'The Athlete',
+    headline: 'No idea how they\'re actually being seen.',
+    body: 'Athletes build profiles on platforms that can\'t tell them who viewed it, what scouts think, or whether their stats stand up against real peers. Visibility is a black box.',
+  },
+  {
+    tag: 'The HS Coach',
+    headline: 'No efficient way to advocate for players.',
+    body: 'High school coaches juggle spreadsheets and mass emails to promote dozens of athletes. There\'s no centralized system to verify stats, share film, or track which programs are engaged.',
+  },
+  {
+    tag: 'The College Recruiter',
+    headline: 'Compliance exposure on every message.',
+    body: 'Recruiters operate under shifting NCAA contact rules with zero tooling to enforce them. One text during a dead period can trigger an investigation. Current platforms ignore this entirely.',
+  },
+  {
+    tag: 'The Parent',
+    headline: 'Completely in the dark about progress.',
+    body: 'Parents invest thousands in camps, travel, and training with no window into what\'s working. They can\'t see recruiter interest, don\'t understand timelines, and rely on secondhand updates.',
+  },
+];
+---
+
+<section id="platform" class="py-20 md:py-24" aria-label="The Problem">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Eyebrow text="01 &middot; THE PROBLEM" />
+    <SectionHeadline>
+      College recruiting is <em>broken</em><br>&mdash; and nobody has fixed it.
+    </SectionHeadline>
+
+    <div class="max-w-3xl">
+      <p class="text-text-muted text-base leading-relaxed mb-4">
+        The $3B college recruiting market is going through its most disruptive period in history.
+        NIL legislation, the transfer portal explosion, and the $2.8B House v. NCAA settlement
+        have rewritten the rules overnight &mdash; while every incumbent platform was built for
+        only one side of a four-sided problem.
+      </p>
+      <p class="text-text-muted text-base leading-relaxed">
+        Athletes, coaches, recruiters, and parents each have different needs, different compliance
+        obligations, and different definitions of success. No platform has tried to serve all four
+        in a single connected system. Until now.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-14">
+      {cards.map((card) => (
+        <div class="bg-bg-secondary border border-border rounded-xl p-6">
+          <p class="font-mono text-[9px] uppercase tracking-[0.15em] text-text-muted mb-3">{card.tag}</p>
+          <h3 class="font-body font-700 text-text text-base mb-2">{card.headline}</h3>
+          <p class="text-text-muted text-sm leading-relaxed">{card.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

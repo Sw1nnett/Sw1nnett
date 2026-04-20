@@ -1,0 +1,36 @@
+---
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeadline from '../SectionHeadline.astro';
+
+const sports = [
+  '🏈 Football', '🏀 Basketball', '⚾ Baseball', '⚽ Soccer',
+  '🥎 Softball', '🏐 Volleyball', '🥍 Lacrosse', '🤼 Wrestling',
+  '🏊 Swimming', '🎾 Tennis', '🏒 Ice Hockey', '🏃 Track & Field',
+  '⛳ Golf', '🏃 Cross Country',
+];
+---
+
+<section id="sports" class="py-20 md:py-24" aria-label="Sport Coverage">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Eyebrow text="05 &middot; SPORT COVERAGE" />
+    <SectionHeadline>
+      14 sports.<br>Each one <em>genuinely</em> different.
+    </SectionHeadline>
+
+    <p class="text-text-muted text-base leading-relaxed max-w-3xl mb-14">
+      No sport gets a renamed football profile. Wrestling has weight classes and
+      pin rates. Swimming has event times per stroke across 12 events. Golf has
+      handicap index. Each sport has its own compliance calendar, its own measurable
+      set, its own Top Talent tier share copy. The platform was built sport-first,
+      not sport-last.
+    </p>
+
+    <div class="flex flex-wrap gap-3">
+      {sports.map((sport) => (
+        <span class="font-mono text-[11px] tracking-[0.05em] text-text-muted bg-bg-tertiary border border-border rounded-full px-4 py-2">
+          {sport}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>

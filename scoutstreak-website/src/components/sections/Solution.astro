@@ -1,0 +1,73 @@
+---
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeadline from '../SectionHeadline.astro';
+import RoleBar from '../RoleBar.astro';
+---
+
+<section id="roles" class="py-20 md:py-24" aria-label="The Solution">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Eyebrow text="02 &middot; THE SOLUTION" />
+    <SectionHeadline>
+      Four stakeholders.<br><em>One</em> network.
+    </SectionHeadline>
+
+    <p class="text-text-muted text-base leading-relaxed max-w-3xl mb-14">
+      ScoutStreak creates a compounding flywheel. One coach imports 30 athletes.
+      Those athletes attract recruiter interest. Recruiters discover more athletes
+      through verified data. Parents sign up to track progress. Each role's actions
+      make every other role's experience more valuable &mdash; a true network effect
+      that no single-sided platform can replicate.
+    </p>
+
+    <div class="space-y-4">
+      <RoleBar
+        emoji="🏃"
+        role="Athlete"
+        headline="Build a verified recruiting profile that scouts actually find."
+        features={[
+          'AI Score Coach delivers 3 daily actions benchmarked to your sport',
+          'Real-time alerts when recruiters view, save, or share your profile',
+          'Exposure Score tracks your visibility against real recruiting peers',
+        ]}
+        price="Free / Pro $24.99"
+        borderColor="#D4A843"
+      />
+      <RoleBar
+        emoji="📋"
+        role="Coach"
+        headline="Advocate for your entire roster from a single dashboard."
+        features={[
+          'Bulk import athletes and verify stats with one-tap confirmation',
+          'AI scout reports auto-generated for each athlete on your roster',
+          'Recruiting calendar with dead period enforcement built in',
+        ]}
+        price="Free / Pro $39.99"
+        borderColor="#2DD4BF"
+      />
+      <RoleBar
+        emoji="🔭"
+        role="Recruiter"
+        headline="Discover athletes through verified data, not self-reported noise."
+        features={[
+          'Natural language search: "6\'2 LB Illinois 2026 with a 3.5 GPA"',
+          'Compliance-enforced messaging with automatic dead period blocking',
+          'Pipeline board with AI offer probability on every prospect',
+        ]}
+        price="Pro $149/mo"
+        borderColor="#7B2BFF"
+      />
+      <RoleBar
+        emoji="👨‍👩‍👧"
+        role="Parent"
+        headline="See everything your athlete sees &mdash; without hovering."
+        features={[
+          'Dashboard mirrors recruiter interest, profile views, and saves',
+          'Personalized roadmap from freshman year through signing day',
+          'Contact coaches directly through compliance-safe messaging',
+        ]}
+        price="Free / Pro $19.99"
+        borderColor="#22c55e"
+      />
+    </div>
+  </div>
+</section>

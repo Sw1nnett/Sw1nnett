@@ -1,0 +1,64 @@
+---
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeadline from '../SectionHeadline.astro';
+import FeatureCard from '../FeatureCard.astro';
+---
+
+<section id="ai" class="py-20 md:py-24" aria-label="The AI Layer">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Eyebrow text="03 &middot; THE AI LAYER" />
+    <SectionHeadline>
+      Eight engines.<br><em>All real.</em> All sport-aware.
+    </SectionHeadline>
+
+    <p class="text-text-muted text-base leading-relaxed max-w-3xl mb-14">
+      Every AI feature runs live GPT-4o-mini calls with athlete-specific context &mdash;
+      sport, position, grad year, stats, and recruiting history. Cached intelligently
+      in Redis. At 1,000 MAU, total AI cost is under $20/month. These aren't marketing
+      checkboxes. They're shipping features with real model calls behind them.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <FeatureCard
+        emoji="🎯"
+        title="Score Coach"
+        description="3 daily AI action steps, benchmarked to your sport and position. Delivered via 7 AM push notification."
+      />
+      <FeatureCard
+        emoji="📋"
+        title="Scout Reports"
+        description="Auto-generated narrative per athlete, included in recruiter alerts and coach dashboards."
+      />
+      <FeatureCard
+        emoji="✉️"
+        title="Recruiting Letters"
+        description="Personalized outreach drafts with program picker, compliance guardrails, and tone analysis."
+      />
+      <FeatureCard
+        emoji="🔍"
+        title="Natural Language Search"
+        description='Query athletes like a recruiter thinks: "6&apos;2 LB Illinois 2026 with a 3.5 GPA."'
+      />
+      <FeatureCard
+        emoji="📊"
+        title="Gap Analyzer"
+        description="Benchmark against real peers in your sport, position, and class year. See percentile rank."
+      />
+      <FeatureCard
+        emoji="🎬"
+        title="AI Game Report"
+        description="Post-game breakdown with play-by-play analysis, player awards, and sport-aware iconography."
+      />
+      <FeatureCard
+        emoji="💰"
+        title="Offer Comparison"
+        description="Side-by-side financial aid analysis across scholarship percentage, institutional aid, and walk-on terms."
+      />
+      <FeatureCard
+        emoji="📡"
+        title="Offer Probability"
+        description="Predict commit likelihood from 4 behavioral signals: profile views, saves, message frequency, and pipeline stage."
+      />
+    </div>
+  </div>
+</section>

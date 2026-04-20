@@ -1,0 +1,48 @@
+---
+import KpiChip from '../KpiChip.astro';
+import CTAButton from '../CTAButton.astro';
+---
+
+<section class="relative min-h-[720px] h-screen flex flex-col justify-center overflow-hidden" aria-label="Hero">
+  <!-- Gradient meshes -->
+  <div class="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-gold/[0.08] blur-[120px] pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-[-15%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-teal/[0.05] blur-[120px] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20">
+    <!-- Eyebrow chips -->
+    <div class="flex flex-wrap gap-3 mb-10">
+      <span class="font-mono text-[9px] uppercase tracking-[0.15em] text-gold bg-gold/[0.08] border border-gold/20 rounded-full px-3 py-1">V1.0 &middot; April 2026</span>
+      <span class="font-mono text-[9px] uppercase tracking-[0.15em] text-teal bg-teal/[0.08] border border-teal/20 rounded-full px-3 py-1">14 Sports &middot; 4 Roles</span>
+      <span class="font-mono text-[9px] uppercase tracking-[0.15em] text-text-muted bg-bg-tertiary border border-border rounded-full px-3 py-1">Launching Soon</span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="font-display text-[clamp(48px,7vw,88px)] leading-[0.98] text-text max-w-4xl">
+      Recruiting,<br><em class="italic text-gold">Verified.</em>
+    </h1>
+
+    <!-- Sub-headline -->
+    <p class="text-text-muted text-[17px] leading-[1.8] max-w-[640px] mt-8">
+      The first sports recruiting platform that connects athletes, coaches,
+      recruiters, and parents in a single intelligent network &mdash; with real AI,
+      real-time NCAA compliance enforcement, and a behavioral graph that grows
+      smarter with every recruiting cycle.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-wrap items-center gap-4 mt-10">
+      <CTAButton href="#signup" variant="filled">Join the launch list</CTAButton>
+      <CTAButton href="#platform" variant="text">See how it works <span aria-hidden="true">&rarr;</span></CTAButton>
+    </div>
+  </div>
+
+  <!-- KPI strip -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-auto pb-12 relative z-10">
+    <div class="flex flex-wrap gap-4">
+      <KpiChip value="264" label="Screens built" />
+      <KpiChip value="14" label="Sports covered" />
+      <KpiChip value="4" label="User roles" />
+      <KpiChip value="8" label="AI engines" />
+    </div>
+  </div>
+</section>

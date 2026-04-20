@@ -1,0 +1,61 @@
+---
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeadline from '../SectionHeadline.astro';
+import PricingCard from '../PricingCard.astro';
+---
+
+<section id="pricing" class="py-20 md:py-24" aria-label="Pricing">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Eyebrow text="06 &middot; PRICING" />
+    <SectionHeadline>
+      Free to start.<br>Pro plans from <em>$19.99/mo</em>.
+    </SectionHeadline>
+
+    <p class="text-text-muted text-base leading-relaxed max-w-3xl mb-14">
+      NCSA charges $2,000&ndash;$5,000 upfront for a human consultant. ScoutStreak delivers
+      AI intelligence, daily action plans, and real-time recruiter tracking for less than
+      1% of that cost. Every role starts free. Pro unlocks the full AI layer.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <PricingCard
+        tier="Athlete Pro"
+        price="$24.99"
+        features={[
+          'AI Score Coach with daily action plan',
+          'Full Gap Analyzer with percentile rank',
+          'AI recruiting letters with program picker',
+          'Priority placement in recruiter search',
+          'Advanced exposure analytics dashboard',
+        ]}
+      />
+      <PricingCard
+        tier="Coach Pro"
+        price="$39.99"
+        features={[
+          'AI scout reports for entire roster',
+          'Bulk athlete management and stat verification',
+          'Recruiting calendar with dead period alerts',
+          'AI game reports with play-by-play breakdown',
+          'Team readiness dashboard and parent reports',
+        ]}
+      />
+      <PricingCard
+        tier="Recruiter Pro"
+        price="$149"
+        features={[
+          'Natural language athlete search across 14 sports',
+          'AI offer probability on every prospect',
+          'Compliance-enforced messaging with audit trail',
+          'Pipeline board with stage tracking',
+          'Weekly intel digest with AI-curated prospects',
+        ]}
+      />
+    </div>
+
+    <p class="text-text-muted text-sm mt-8">
+      For programs, conferences, and enterprise licensing, contact
+      <a href="mailto:swinnett@scoutstreak.com" class="text-gold hover:underline">swinnett@scoutstreak.com</a>.
+    </p>
+  </div>
+</section>
